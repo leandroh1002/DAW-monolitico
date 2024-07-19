@@ -39,6 +39,14 @@ jobs:
         MONGO_URI: mongodb://localhost:27017/test
       run: npm test
 
+    - name: Wait for MongoDB to be ready
+      run: |
+        until docker exec mongo mongo --eval "print(\"waited for connection\")"
+        do
+          echo "Waiting for MongoDB to be ready..."
+          sleep 5
+        done
+
     - name: Build Docker image
       run: docker build . --file Dockerfile --tag myapp:latest
 
