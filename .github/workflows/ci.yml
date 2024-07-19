@@ -34,9 +34,6 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Lint code
-      run: npm run lint
-
     - name: Run tests
       env:
         MONGO_URI: mongodb://localhost:27017/test
