@@ -1,18 +1,15 @@
-# Usar la imagen base de Node.js
-FROM node:14
+# From es para elegir que imagen vamos a usar para instalar la aplicacion
 
-# Crear el directorio de la aplicación
-WORKDIR /usr/src/app
+FROM node:18.19.0-slim
 
-# Instalar las dependencias
-COPY package*.json ./
+# ahora se va a elegir el directorio, tiene que ver con el contenedor de docker
+WORKDIR /app
+
+#ahora copiamos los archivos
+COPY . . 
+
+# Iniciar el entorno
 RUN npm install
 
-# Copiar el resto del código de la aplicación
-COPY . .
-
-# Exponer el puerto de la aplicación
-EXPOSE 3000
-
-# Comando para ejecutar la aplicación
-CMD ["node", "index.js"]
+# inicia el contenedor
+CMD ["npm", "start"]
