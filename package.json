@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose",
     "start": "node index.js",
+    "lint": "eslint .",
+    "test": "jest",
     "dev": "nodemon index.js"
   },
   "keywords": [],
