@@ -26,7 +26,7 @@ jobs:
       run: docker build . --file Dockerfile --tag myapp:latest
 
     - name: Push Docker image
-      run: docker push myapp:latest
+      run: docker push leandroh1002/myapp:latest
 
     - name: Deploy to Server
       run: |
