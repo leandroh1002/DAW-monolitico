@@ -1,46 +1,46 @@
-name: CI Pipeline
+name: CI Pipeline #Le da un nombre al pipeline. 
 
-on:
+on: #Define los eventos que activan el pipeline, en este caso es cuando se hace un push o un pullrequest a la rama main
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
 
-jobs:
-  build:
+jobs: #Define los trabajos que se ejecutarán en el pipeline
+  build: #Aqui puede ir un nombre del trabajo
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest #Especifica el sistema operativo en el que se ejecutará el trabajo
 
-    services:
+    services: #Define los servicios adicionales que se ejecutan junto con el trabajo. Aquí se está usando MongoDB.
       mongo:
-        image: mongo:4.4
+        image: mongo:4.4 #se configura la imagen de mongo que se vaya a utilizar
         ports:
-          - 27017:27017
-        options: >-
+          - 27017:27017 #Mapea el puerto del contenedor al puerto del host
+        options: >- #verificar que MongoDB está funcionando correctamente.
           --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'" 
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
 
-    steps:
+    steps: #Lista los pasos que se ejecutarán en el trabajo
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v2 #Usa la acción de GitHub para hacer checkout del código en la rama actual.
 
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '20'
+        node-version: '20' #Especifica la versión de Node.js
 
     - name: Install dependencies
-      run: npm install
+      run: npm install #Ejecuta el comando npm install 
+
+    - name: Build Docker image
+      run: docker build . --file Dockerfile --tag myapp:latest #Construye una imagen Docker
+      
+    - name: Run Docker container
+      run: docker run -d -p 3000:3000 --name myapp --network=host myapp:latest #ejecuta el contenedor Docker
 
     - name: Run tests
       env:
-        MONGO_URI: mongodb://localhost:27017/test
-      run: npm test
-
-    - name: Build Docker image
-      run: docker build . --file Dockerfile --tag myapp:latest
-
-    - name: Run Docker container
-      run: docker run -d -p 3000:3000 --name myapp --network=host myapp:latest
+          MONGO_URI: mongodb://localhost:27017/test
+      run: npm test #Ejecuta el comando npm test 
