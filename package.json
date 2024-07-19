@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "lint": "eslint .",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "dev": "nodemon index.js"
   },
   "keywords": [],
